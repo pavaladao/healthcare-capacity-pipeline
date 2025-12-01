@@ -1,166 +1,133 @@
-````markdown
-# 🏥 Healthcare Hospital Capacity Data Pipeline
+# 🏥 U.S. Hospital Capacity Data Pipeline
 
-This project implements an end-to-end data pipeline to collect, clean, model, and visualize U.S. hospital capacity metrics using real open government data. The final deliverable is an interactive dashboard enabling analysis of bed utilization over time to support public health decision-making.
+**End-to-end data engineering project using real U.S. healthcare data** to analyze hospital bed capacity and occupancy over time.
 
-> This repository is part of a broader data engineering & analytics portfolio focused on real-world datasets and modern data stack practices.
+This repository demonstrates a modern data pipeline architecture, including automated ingestion, data lake storage, data warehousing for analytics, and an interactive visualization dashboard.
 
----
-
-## 🎯 Objective
-
-Build a scalable data pipeline capable of:
-
-1. **Ingesting** raw hospital capacity data directly from U.S. open data APIs  
-2. **Transforming and validating** the data using optimized analytical formats  
-3. **Modeling** dimensions and fact tables for efficient reporting  
-4. **Visualizing** key indicators through an interactive dashboard
+> Built to showcase real-world data skills for U.S.-based data engineering and analytics roles (CPT/F1), using up-to-date technologies aligned with industry demand.
 
 ---
 
-## 🧱 Architecture Overview
+## 🔍 Project Overview
 
-The project follows a **Bronze → Silver** data architecture:
+This project extracts hospital capacity data from U.S. public health sources, processes it into analytical layers using parquet and DuckDB, and exposes insights via a Streamlit dashboard.
+
+🎯 **Primary goals**
+
+* Collect real healthcare operational data from the U.S.
+* Build reproducible and automated data pipelines with Prefect
+* Apply good data modeling and governance practices
+* Enable data-driven decisions through visualization
+
+📌 **Dataset**
+
+> “COVID-19 Reported Patient Impact and Hospital Capacity by Facility”
+> Source: U.S. HealthData.gov (API/CSV)
+> [Official dataset link — TODO]
+
+---
+
+## 🧱 Architecture
 
 ```mermaid
 graph TD
-    A[HealthData.gov API] -->|Ingestion| B[Bronze Layer - Parquet]
-    B -->|Transform/Clean| C[Silver Layer - DuckDB]
-    C -->|Analytics| D[Streamlit Dashboard]
-````
+    A[HealthData.gov API / CSV] --> B[Prefect ETL]
+    B --> C[Bronze Layer - Parquet + Partitioning]
+    C --> D[Silver Layer - DuckDB Data Warehouse]
+    D --> E[Streamlit Interactive Dashboard]
+```
 
----
+📌 Layers:
 
-## 📊 Dataset
-
-* **Source:** U.S. Department of Health & Human Services — HealthData.gov
-* **Theme:** Weekly reported hospital patient impact & bed capacity
-* **Fields examples:**
-
-  * Staffed beds
-  * Beds occupied
-  * ICU beds
-  * COVID-19 patient impact
-  * Hospital geolocation (State, County, Facility ID)
-
-The dataset is updated continuously from official U.S. hospital reporting.
-
-🔗 Final dataset/API link will be added upon pipeline configuration.
+* **Bronze** → Raw data cleaned & standardized (Parquet)
+* **Silver** → Analytical warehouse optimized for dashboards (DuckDB)
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Component                  | Technology             |
-| -------------------------- | ---------------------- |
-| Language                   | Python                 |
-| Orchestration              | Prefect                |
-| Data Lake                  | Parquet + partitioning |
-| Data Warehouse (Analytics) | DuckDB                 |
-| Dashboard                  | Streamlit + Plotly     |
-| Version Control            | Git & GitHub           |
+| Layer          | Tool                   | Why                                                         |
+| -------------- | ---------------------- | ----------------------------------------------------------- |
+| Orchestration  | **Prefect**            | Lightweight and modern workflow orchestration               |
+| Storage Format | **Parquet / PyArrow**  | Industry standard for analytics and cloud-based data lakes  |
+| Query Engine   | **DuckDB**             | Fast OLAP analytics locally; trending in modern data stacks |
+| Processing     | **Python** (pandas)    | Most widely adopted language for data engineering           |
+| Dashboard      | **Streamlit + Plotly** | Rapid visualization + interactive exploration               |
+
+All tools are free and open-source.
+Designed to run locally and be easily extended to cloud environments.
 
 ---
 
-## 🔍 Key Features
+## 📊 Current Features
 
-✔ Automated ingestion pipeline
-✔ Incremental and structured data storage
-✔ Fact/dimension modeling for analytical queries
-✔ Interactive insights for U.S. public health monitoring
-✔ Fully reproducible environment
+* [ ] Automated dataset ingestion using Prefect
+* [ ] Data lake storage in Parquet (Bronze Layer)
+* [ ] Data warehouse modeling in DuckDB (Silver Layer)
+* [ ] KPIs on hospital capacity and occupancy
+* [ ] Streamlit dashboard with filters by state, date, and metrics
+
+📌 Example KPIs:
+
+* Bed occupancy rate over time
+* ICU vs non-ICU usage
+* Top overloaded hospitals by state
+
+*(screenshots coming soon)*
 
 ---
 
-## 📈 KPIs (MVP)
+## 📂 Repository Structure
 
-* Bed occupancy (%) per state/hospital
-* ICU stress evolution over time
-* Top hospitals by average utilization
-* U.S. heatmap by capacity indicators *(coming soon)*
+```text
+.
+├── data/
+│   ├── raw/         # Ingested CSV snapshots
+│   ├── bronze/      # Parquet files, partitioned
+│   └── warehouse/   # DuckDB database file
+├── flows/           # Prefect flows for automation
+├── src/
+│   ├── ingestion/   # Data download scripts
+│   ├── transforms/  # Cleaning and DW modeling
+│   └── utils/       # Shared helpers
+├── dashboards/      # Streamlit web application
+├── notebooks/       # EDA and experiments
+└── README.md
+```
 
 ---
 
 ## 🚀 How to Run Locally
 
 ```bash
-# Install dependencies
+# 1️⃣ Install dependencies
 pip install -r requirements.txt
 
-# Run ingestion pipeline
-python -m flows.ingest
+# 2️⃣ Run ingestion flow
+python -m flows.ingestion_flow
 
-# Build the analytical warehouse
-python -m flows.build_warehouse
+# 3️⃣ Build analytical tables
+python -m flows.build_silver_flow
 
-# Launch dashboard
+# 4️⃣ Launch dashboard
 streamlit run dashboards/app.py
 ```
 
 ---
 
-## 📁 Repository Structure
+## 📈 Future Enhancements
 
-```text
-│
-├── data/
-│   ├── raw/
-│   ├── bronze/
-│   └── warehouse.duckdb
-│
-├── flows/
-├── src/
-│   ├── ingestion/
-│   ├── transforms/
-│   └── utils/
-│
-├── dashboards/
-└── notebooks/
-```
-
+* [ ] Add U.S. demographic data to enhance analytics (population context)
+* [ ] Incremental ingestion and historical snapshot management
+* [ ] Deploy Streamlit app online (Streamlit Cloud)
+* [ ] Cloud storage integration (AWS S3 / GCS)
+* [ ] Add Brazilian datasets (DATASUS / OpenDataSUS) for international comparison
 ---
 
-## 📌 Roadmap
-
-| Status | Milestone                       |
-| ------ | ------------------------------- |
-| 🟡     | API ingestion + Bronze Parquet  |
-| ⚪      | Silver warehouse in DuckDB      |
-| ⚪      | Streamlit dashboard             |
-| ⚪      | Cloud deployment                |
-| ⚪      | Additional U.S./Brazil datasets |
-
----
-
-## 🎓 Skills Demonstrated
-
-* Data engineering and orchestration
-* Data modeling (Dimensional / Star schema)
-* Public health data analysis
-* Visualization and product thinking
-* Modern data stack technologies
-
----
-
-## 🤝 Contributions
-
-Suggestions and improvements are welcome!
-Future enhancements include:
-
-* Validation with Pandera or Great Expectations
-* Monitoring and CI/CD automation
-* Geospatial analytics
-* Comparison between U.S. and Brazil hospital systems
-
----
-
-## 👤 Author
+## 👨‍💻 Author
 
 **Pedro Valadão**
-M.S. Computer Science Candidate — U.S. (2026)
-Focus: Data Engineering • Applied Data Science • AI Automation
+Data Engineering & Automation
+GitHub: [@pavaladao](https://github.com/pavaladao)
 
-```
-
-Me confirma: quer que eu já **crie os primeiros arquivos do projeto** e te entregue?
-```
+Quer que eu já prepare as **issues do roadmap** para você importar direto no GitHub Projects? Ou quer que eu comece gerando o script da ingestão em Python?
