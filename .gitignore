@@ -1,0 +1,27 @@
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Byte-compiled files
+__pycache__/
+*.pyc
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Data lake & warehouse files (large or sensitive data)
+data/raw/
+data/bronze/
+data/silver/
+data/**/*.parquet
+*.duckdb
+
+# Environment variables
+.env
+
+# Prefect local storage / artifacts
+.prefect/
+
+# VSCode settings
+.vscode/
