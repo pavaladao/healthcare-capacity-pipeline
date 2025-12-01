@@ -1,6 +1,7 @@
 # 🏥 U.S. Hospital Capacity Data Pipeline
 
-**End-to-end data engineering project using real U.S. healthcare data** to analyze hospital bed capacity and occupancy over time.
+**End-to-end data engineering project using real U.S. hospital capacity data from HealthData.gov.
+The goal is to build a modern data pipeline (Prefect + Parquet + DuckDB) and expose key healthcare capacity KPIs through a Streamlit dashboard.
 
 This repository demonstrates a modern data pipeline architecture, including automated ingestion, data lake storage, data warehousing for analytics, and an interactive visualization dashboard.
 
